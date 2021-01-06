@@ -1,0 +1,573 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+void insert();
+void view();
+void update();
+void delete();
+void insertfile();
+void viewfile();
+void updatefile();
+void deletefile();
+void trackfile();
+
+
+struct employee{
+int eid;
+char fname[30];
+char lname[30];
+int age;
+char  phone_num[30];
+
+}d1;
+
+struct file{
+
+int fid;
+char ftype[30];
+char fname[30];
+char name[30];
+char gender[30];
+char country[30];
+char INo[50];
+int D,O,B;
+int Date,OF,I;
+int Da,F,E;
+
+
+}d2;
+
+
+void view()
+{
+
+ FILE *fp1;
+ fp1 = fopen("employee.txt", "r");
+ printf("\nEmployeeID\tEmployeeFirstName\tEmployeeLastName\tAge\tPhone number\n");
+ while (fread(&d1, sizeof(d1), 1, fp1))
+  printf("\n%d\t\t%s\t\t\t%s\t\t\t%d\t%s\t\t",d1.eid,d1.fname,d1.lname,d1.age,d1.phone_num);
+ fclose(fp1);
+}
+
+void insert()
+{
+ FILE *fp;
+ fp = fopen("employee.txt","a");
+ printf("Enter Employee ID      :");
+ scanf("%d", &d1.eid);
+ printf("\nEnter Employee First Name      :");
+ scanf("%s", &d1.fname);
+  printf("\nEnter Employee Last Name      :");
+ scanf("%s", &d1.lname);
+ printf("\nEnter Employee Age      :");
+
+scanf("%d", &d1.age);
+ printf("\nEnter Phone Number      :");
+ scanf("%s", &d1.phone_num);
+ fwrite(&d1, sizeof(d1), 1, fp);
+ fclose(fp);
+}
+
+
+
+void update()
+{
+ FILE *fpt;
+ FILE *fpo;
+ int s, r, ch;
+ printf("Enter Employee ID to update:");
+ scanf("%d", &r);
+ if (avlid(r) == 0)
+ {
+  printf("ID %d is not Available in the file", r);
+ }
+ else
+ {
+  fpo = fopen("employee.txt", "r");
+  fpt = fopen("TempFile", "w");
+  while (fread(&d1, sizeof(d1), 1, fpo))
+  {
+   s = d1.eid;
+   if (s != r)
+    fwrite(&d1, sizeof(d1), 1, fpt);
+   else
+   {
+    printf("\n\t1. Update Employee First Name: ", r);
+    printf("\n\t2. Update Employee Last Name: ", r);
+    printf("\n\t3. Update Employee Age: " , r);
+    printf("\n\t4. Update Employee PhoneNo: ", r);
+
+
+
+    printf("\nEnter your choice:");
+    scanf("%d", &ch);
+    switch (ch)
+    {
+    case 1:
+     printf("Enter First Name:");
+     scanf("%s", d1.fname);
+     break;
+    case 2:
+     printf("Enter Last Name: ");
+     scanf("%s", d1.lname);
+     break;
+    case 3:
+     printf("Enter Age: ");
+     scanf("%d", &d1.age);
+     break;
+    case 4:
+     printf("Enter Phone Number: ");
+     scanf("%s", &d1.phone_num);
+     break;
+    default:
+     printf("Invalid Selection");
+     break;
+    }
+    fwrite(&d1, sizeof(d1), 1, fpt);
+   }
+  }
+  fclose(fpo);
+  fclose(fpt);
+  fpo = fopen("employee.txt", "w");
+  fpt = fopen("TempFile", "r");
+  while (fread(&d1, sizeof(d1), 1, fpt))
+  {
+   fwrite(&d1, sizeof(d1), 1, fpo);
+  }
+  fclose(fpo);
+  fclose(fpt);
+  printf("RECORD UPDATED");
+ }
+}
+
+void delete()
+{
+ FILE *fpo;
+ FILE *fpt;
+ int r, s;
+ printf("Enter the Employee ID you want to delete:");
+ scanf("%d", &r);
+ if (avlid(r) == 0)
+  printf("ID %d is not available in the file\n", r);
+ else
+ {
+  fpo = fopen("employee.txt", "r");
+  fpt = fopen("TempFile", "w");
+  while (fread(&d1, sizeof(d1), 1, fpo))
+  {
+   s = d1.eid;
+   if (s != r)
+    fwrite(&d1, sizeof(d1), 1, fpt);
+  }
+  fclose(fpo);
+  fclose(fpt);
+  fpo = fopen("employee.txt", "w");
+  fpt = fopen("TempFile", "r");
+  while (fread(&d1, sizeof(d1), 1, fpt))
+   fwrite(&d1, sizeof(d1), 1, fpo);
+  printf("\nRECORD DELETED\n");
+  fclose(fpo);
+  fclose(fpt);
+ }
+ }
+
+int avlid(int idn)
+{
+ FILE *fp;
+ int c = 0;
+ fp = fopen("employee.txt", "r");
+ while (!feof(fp))
+ {
+  fread(&d1, sizeof(d1), 1, fp);
+
+  if (idn == d1.eid)
+  {
+   fclose(fp);
+   return 1;
+  }
+ }
+ fclose(fp);
+ return 0;
+}
+
+int empty()
+{
+ int c = 0;
+ FILE *fp;
+ fp = fopen("employee.txt", "r");
+ while (fread(&d1, sizeof(d1), 1, fp))
+  c = 1;
+ fclose(fp);
+ return c;
+}
+
+void insertfile()
+{
+  FILE *fp;
+ fp = fopen("file","a");
+ printf("Enter FileID      :");
+ scanf("%d", &d2.fid);
+ printf("\nEnter File Type      :");
+ scanf("%s", &d2.ftype);
+  printf("\nEnter File Name      :");
+ scanf("%s", &d2.fname);
+ printf("\nEnter Name      :");
+ scanf("%s", &d2.name);
+ printf("\nEnter Gender      :");
+ scanf("%s", &d2.gender);
+ printf("\nEnter Country      :");
+ scanf("%s", &d2.country);
+ printf("\nEnter CNIC No      :");
+ scanf("%s", &d2.INo);
+ printf("\nEnter Date of Birth      :");
+ scanf("%d.%d.%d", &d2.D,&d2.O,&d2.B);
+ printf("\nEnter Date of Issuance      :");
+ scanf("%d.%d.%d", &d2.Date,&d2.OF,&d2.I);
+ printf("\nEnter Date of Expiry      :");
+ scanf("%d.%d.%d", &d2.Da,&d2.F,&d2.E);
+ fwrite(&d2, sizeof(d2), 2, fp);
+ fclose(fp);
+}
+
+void viewfile()
+{
+
+ FILE *fp1;
+ fp1 = fopen("file", "r");
+ printf("\nFileID\tFileType\tFileName\tName\tGender\tCountry\tCNIC\t\tDateOFBirth\tDateOFIssuance\tDateOFExpiry\n");
+ while (fread(&d2, sizeof(d2), 2, fp1))
+  printf("\n%d\t%s\t%s\t\t%s\t%s\t%s\t%s\t%d.%d.%d\t%d.%d.%d\t%d.%d.%d",d2.fid,d2.ftype,d2.fname,d2.name,d2.gender,d2.country,d2.INo,d2.D,d2.O,d2.B,d2.Date,d2.OF,d2.I,d2.Da,d2.F,d2.E);
+ fclose(fp1);
+}
+
+void updatefile()
+{
+ FILE *fpt;
+ FILE *fpo;
+ int s, r, ch;
+ printf("Enter File ID to update:");
+ scanf("%d", &r);
+ if (avlid(r) == 0)
+ {
+  printf("ID %d is not Available in the file", r);
+ }
+ else
+ {
+  fpo = fopen("file", "r");
+  fpt = fopen("TempFile", "w");
+  while (fread(&d2, sizeof(d2), 2, fpo))
+  {
+   s = d2.fid;
+   if (s != r)
+    fwrite(&d2, sizeof(d2), 2, fpt);
+   else
+   {
+    printf("\n\t1. Update File Type", r);
+    printf("\n\t2. Update File Name", r);
+    printf("\n\t3. Update Name" , r);
+    printf("\n\t4. Update Gender", r);
+    printf("\n\t4. Update Country", r);
+    printf("\n\t4. Update CNIC", r);
+    printf("\n\t4. Update Date of Birth", r);
+    printf("\n\t4. Update Date of Issuance", r);
+    printf("\n\t4. Update Date of Expiry", r);
+
+
+
+
+    printf("\nEnter your choice:");
+    scanf("%d", &ch);
+    switch (ch)
+    {
+    case 1:
+     printf("Enter File Type to Update:");
+     scanf("%s", d2.ftype);
+     break;
+    case 2:
+     printf("Enter File Name to Update:");
+     scanf("%s", d2.fname);
+     break;
+    case 3:
+     printf("Enter Name to Update:");
+     scanf("%s", &d2.name);
+     break;
+    case 4:
+     printf("Enter Gender to Update:");
+     scanf("%s", &d2.gender);
+     break;
+    case 5:
+     printf("Enter Country to Update:");
+     scanf("%s", &d2.country);
+     break;
+    case 6:
+     printf("Enter CNIC to Update:");
+     scanf("%s", &d2.INo);
+     break;
+    case 7:
+     printf("Enter CNIC to Update:");
+     scanf("%s", &d2.INo);
+     break;
+    case 8:
+     printf("Enter Date Of Birth to Update:");
+     scanf("%d.%d.%d", &d2.D,&d2.O,d2.B);
+     break;
+    case 9:
+     printf("Enter Date Of Issuance to Update:");
+     scanf("%d.%d.%d", &d2.Date,&d2.OF,d2.I);
+     break;
+    case 10:
+     printf("Enter Date Of Expiry to Update:");
+     scanf("%d.%d.%d", &d2.Da,&d2.F,d2.E);
+     break;
+
+    default:
+     printf("Invalid Selection");
+     break;
+    }
+    fwrite(&d2, sizeof(d2), 2, fpt);
+   }
+  }
+  fclose(fpo);
+  fclose(fpt);
+  fpo = fopen("file.txt", "w");
+  fpt = fopen("TempFile", "r");
+  while (fread(&d2, sizeof(d2), 2, fpt))
+  {
+   fwrite(&d2, sizeof(d2), 2, fpo);
+  }
+  fclose(fpo);
+  fclose(fpt);
+  printf("RECORD UPDATED");
+ }
+}
+
+void deletefile()
+{
+ FILE *fpo;
+ FILE *fpt;
+ int r, s;
+ printf("Enter the File ID that you want to delete:");
+ scanf("%d", &r);
+ if (avlid(r) == 0)
+  printf("ID %d is not available in the file\n", r);
+ else
+ {
+  fpo = fopen("file", "r");
+  fpt = fopen("TempFile", "w");
+  while (fread(&d2, sizeof(d2), 2, fpo))
+  {
+   s = d2.fid;
+   if (s != r)
+    fwrite(&d2, sizeof(d2), 2, fpt);
+  }
+  fclose(fpo);
+  fclose(fpt);
+  fpo = fopen("file", "w");
+  fpt = fopen("TempFile", "r");
+  while (fread(&d2, sizeof(d2), 2, fpt))
+   fwrite(&d2, sizeof(d2), 2, fpo);
+  printf("\nRECORD DELETED\n");
+  fclose(fpo);
+  fclose(fpt);
+ }
+ }
+
+ void trackfile()
+ {
+     FILE *fp2;
+     FILE *fp3;
+ int r, s, p,g;
+ printf("\nEnter the ID you want to search  :");
+ scanf("%d", &r);
+ if (avlid(r) == 0)
+  printf("ID %d is not available in the file\n",r);
+ else
+ {
+  fp2 = fopen("file", "r");
+  fp3 = fopen("employee.txt", "r");
+  while (fread(&d2, sizeof(d2), 2, fp2))
+  {
+   s = d2.fid;
+   if (s == r)
+   {
+    printf("\nFileID = %d", d2.fid);
+    printf("\nFileType    = %s", d2.ftype);
+    printf("\nFileName    = %s", d2.fname);
+    printf("\nName        = %s",d2.name);
+    printf("\nGender      = %s", d2.gender);
+    printf("\nCountry     = %s", d2.country);
+    printf("\nCNIC NO     = %s", d2.INo);
+    printf("\nDateOFBirth = %d.%d.%d", d2.D,d2.O,d2.B);
+    printf("\nDateOFIssuance = %d.%d.%d", d2.Date,d2.OF,d2.I);
+    printf("\nDateOFExpiry = %d.%d.%d", d2.Da,d2.F,d2.E);
+
+       }
+
+  }
+  fclose(fp2);
+ }
+
+ }
+
+
+
+
+
+void main()
+{
+ int c, ch,fh, emp;
+ printf("File Tracking System\n");
+    int m,n;
+//making out the pattern
+
+    for(m=1; m<=4; m++)
+    {
+        for(n=1; n<=5; n++)
+            printf(" ");
+        for(n=1; n<=m-1; n++)
+        {
+            printf(" ");
+        }
+        for(n=1; n<=4-m+1; n++)
+        {
+            if(n==4-m+1 || m==1 || m==4)
+                printf("*");
+            else
+                printf(" ");
+        }
+        for(n=1; n<=4-m+1; n++)
+        {
+            if(n==1 ||m==1 || m==4)
+                printf("*");
+            else
+                printf(" ");
+        }
+        printf("\n");
+    }
+ do
+ {
+  printf("\n\t---Select your choice---------\n");
+  printf("\n\t1. Employee Info\n\t2. File Information\n\t3. File Tracking");
+  printf("\n");
+  printf("\n\t4. EXIT");
+  printf("\n\n------------------------------------------\n");
+  printf("\nEnter your choice:");
+  scanf("%d", &c);
+  printf("\n");
+  switch (c)
+  {
+  case 1:
+   printf("\n\t---Select your choice---------\n");
+  printf("\n\t1. Add Employee\n\t2. View Employee\n\t3. Delete Employee\n\t4. Update Employee");
+  printf("\n");
+  printf("\n\t5. EXIT");
+  printf("\n\n------------------------------------------\n");
+  printf("\nEnter your choice:");
+  scanf("%d", &ch);
+  printf("\n");
+
+  switch (ch)
+  {
+
+
+    case 1:
+
+        insert();
+
+
+        break;
+
+
+
+    case 2:
+
+        emp = empty();
+   if (emp == 0)
+    printf("\nThe file is EMPTY\n");
+   else
+    view();
+    break;
+
+
+    case 3:
+
+        delete();
+        break;
+
+    case 4:
+
+        update();
+        break;
+    case 5:
+    main();
+
+
+    default:
+
+        printf("invalid selection");
+        break;
+  }
+   break;
+
+   case 2:
+    printf("\n\t---Select your choice---------\n");
+  printf("\n\t1. Add File\n\t2. View File\n\t3. Delete File\n\t4. Update File");
+  printf("\n");
+  printf("\n\t5. EXIT");
+  printf("\n\n------------------------------------------\n");
+  printf("\nEnter your choice:");
+  scanf("%d", &fh);
+  printf("\n");
+  switch (fh)
+  {
+
+
+    case 1:
+
+        insertfile();
+        break;
+
+
+    case 2:
+
+        emp = empty();
+   if (emp == 0)
+    printf("\nThe file is EMPTY\n");
+   else
+    viewfile();
+    break;
+
+
+    case 3:
+
+        deletefile();
+        break;
+
+    case 4:
+
+        updatefile();
+        break;
+    case 5:
+    main();
+    break;
+
+    default:
+
+        printf("invalid selection");
+        break;
+  }
+   break;
+    case 3:
+        trackfile();
+        break;
+
+    case 4:
+     exit(0);
+
+
+  default:
+   printf("\nYour choice is wrong\nPlease try again...\n");
+   break;
+  }
+   }while (c != 2);
+}
